@@ -116,7 +116,12 @@ class caldav_driver extends calendar_driver
             $password = $this->rc->get_user_password();
 
             foreach ($preinstalled_sources as $cal){
-                $url  = $cal['caldav_url'];
+                $cal = rcube::get_instance()->plugins->exec_hook('caldav_init_preset', $cal);
+		if (isset($cal['skip_preset'])) {
+			continue;
+		}
+
+		$url  = $cal['caldav_url'];
                 $user = $cal['caldav_user'];
                 $pass = $cal['caldav_pass'];
 
